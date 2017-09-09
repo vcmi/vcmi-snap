@@ -13,9 +13,13 @@ apps:
     plugs:
       - unity7
       - network
-      - network-manager
       - opengl
       - x11
+      # For client
+      - pulseaudio
+      - alsa
+      # For server
+      - network-bind
     environment:
       LC_ALL: C.UTF-8
   vcmiclient:
@@ -23,11 +27,12 @@ apps:
     desktop: game/share/applications/vcmiclient.desktop
     plugs:
       - network
-      - network-bind
       - opengl
       - pulseaudio
       - alsa
       - x11
+      # For server
+      - network-bind
     environment:
       LC_ALL: C.UTF-8
   vcmiserver:
@@ -58,7 +63,8 @@ parts:
     plugin: cmake
     source: https://github.com/vcmi/vcmi.git
     configflags:
-      - -DCMAKE_INSTALL_PREFIX:PATH=/game
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_PREFIX=/game
       - -DENABLE_MONOLITHIC_INSTALL=ON
     after: [desktop-qt5]
     build-packages:
